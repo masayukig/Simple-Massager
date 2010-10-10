@@ -22,9 +22,9 @@ public class Massage extends Activity implements OnClickListener {
 
 	private static final int QUIT_ITEM = 0;
 	private boolean isVibrating = false;
-	private boolean isAlive;
 	private int vibMode;
 	private Vibrator vib;
+	private MyVibrator myVibrator;
 
 	
 	/** Called when the activity is first created. */
@@ -40,25 +40,10 @@ public class Massage extends Activity implements OnClickListener {
 		Context context = getBaseContext();
 		vib = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
 		
-		isAlive = true;
-		Thread myVibrator = new Thread(new MyVibrator());
-		myVibrator.start();
 	}
 
 	@Override
 	public void onClick(View v) {
-		if (isVibrating) {
-			vib.cancel();
-			isVibrating = false;
-			Button button = (Button) v.findViewById(R.id.Massage);
-			button.setText(R.string.start);
-			Log.d(TAG, "vibrate end.");
-			return;
-		}
-		Log.d(TAG, "vibrate start.");
-		isVibrating = true;
-		Button button = (Button) v.findViewById(R.id.Massage);
-		button.setText(R.string.stop);
 		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.RadioGroup01);
 		int checkedButtonId = radioGroup.getCheckedRadioButtonId();
 		if (checkedButtonId == R.id.RadioButtonRandomRepeat) {
@@ -67,6 +52,31 @@ public class Massage extends Activity implements OnClickListener {
 			vibMode = CONTINUOUS;
 		}
 		Log.d(TAG, "vibMode:" + vibMode);
+		
+		if (isVibrating) {
+			if (myVibrator != null) {
+				myVibrator.setToDie();
+			}
+			vib.cancel();
+			isVibrating = false;
+			Button button = (Button) v.findViewById(R.id.Massage);
+			button.setText(R.string.start);
+			Log.d(TAG, "vibrate end.");
+			return;
+		}
+		if (myVibrator != null) {
+			myVibrator.setToDie();
+		}
+		myVibrator = new MyVibrator();
+		myVibrator.setToAlive();
+		Thread myVibratorThread = new Thread(myVibrator);
+		myVibratorThread.start();
+		isVibrating = true;
+
+		Log.d(TAG, "vibrate start.");
+		Button button = (Button) v.findViewById(R.id.Massage);
+		button.setText(R.string.stop);
+
 	}
 
 
@@ -81,11 +91,11 @@ public class Massage extends Activity implements OnClickListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		vib.cancel();
-		isAlive = false;
 		finish();
 		return true;
 	}
 	private class MyVibrator implements Runnable {
+		private boolean isAlive;
 		@Override
 		public void run() {
 			while (isAlive) {
@@ -98,6 +108,12 @@ public class Massage extends Activity implements OnClickListener {
 				sleep(vibratingTime);
 				Log.d(TAG, "vibrating " + vibratingTime + "msec.");
 			}
+		}
+		void setToAlive() {
+			isAlive = true;
+		}
+		void setToDie() {
+			isAlive = false;
 		}
 		private void sleep(long vibratingTime) {
 			try {
