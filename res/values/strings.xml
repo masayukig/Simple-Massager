@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, Massage!</string>
-    <string name="app_name">Massage Machine</string>
+    <string name="hello">Simple Massager</string>
+    <string name="app_name">Simple Massager</string>
+    <string name="stop">stop</string>
+    <string name="start">start</string>
+    <string name="RandomRepeat">Random Repeat</string>
+    <string name="Continuous">Continuous</string>
 </resources>
