@@ -59,8 +59,9 @@ public class Massage extends Activity implements OnClickListener {
 			}
 			vib.cancel();
 			isVibrating = false;
-			Button button = (Button) v.findViewById(R.id.Massage);
+			Button button = (Button) findViewById(R.id.Massage);
 			button.setText(R.string.start);
+			setEnabledRadioButtons(true);
 			Log.d(TAG, "vibrate end.");
 			return;
 		}
@@ -72,10 +73,16 @@ public class Massage extends Activity implements OnClickListener {
 		Thread myVibratorThread = new Thread(myVibrator);
 		myVibratorThread.start();
 		isVibrating = true;
+		setEnabledRadioButtons(false);
 
 		Log.d(TAG, "vibrate start.");
-		Button button = (Button) v.findViewById(R.id.Massage);
+		Button button = (Button) findViewById(R.id.Massage);
 		button.setText(R.string.stop);
+	}
+
+	private void setEnabledRadioButtons(boolean isEnabled) {
+		findViewById(R.id.RadioButton01).setEnabled(isEnabled);
+		findViewById(R.id.RadioButtonRandomRepeat).setEnabled(isEnabled);
 	}
 
 	@Override
