@@ -76,9 +76,7 @@ public class Massage extends Activity implements OnClickListener {
 		Log.d(TAG, "vibrate start.");
 		Button button = (Button) v.findViewById(R.id.Massage);
 		button.setText(R.string.stop);
-
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
