@@ -96,6 +96,9 @@ public class Massage extends Activity implements OnClickListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		vib.cancel();
+		if (myVibrator != null) {
+			myVibrator.setToDie();
+		}
 		finish();
 		return true;
 	}
