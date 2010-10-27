@@ -10,10 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.RadioGroup;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public class Massage extends Activity implements OnClickListener {
+public class Massage extends Activity
+	implements OnClickListener,
+	OnSeekBarChangeListener {
 	private static final String TAG = Massage.class.getSimpleName();
 
 	// TODO to Enum
@@ -24,7 +26,9 @@ public class Massage extends Activity implements OnClickListener {
 	private boolean isVibrating = false;
 	private int vibMode;
 	private Vibrator vib;
-	private MyVibrator myVibrator;
+	private static MyVibrator myVibrator;
+
+	private long vibratingTime = 1000L;
 
 	
 	/** Called when the activity is first created. */
@@ -33,56 +37,28 @@ public class Massage extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		Button button = (Button) findViewById(R.id.Massage);
-		button.setOnClickListener(this);
-		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.RadioGroup01);
-		radioGroup.setOnClickListener(this);
+		SeekBar seekBar = (SeekBar) findViewById(R.id.SeekBar01);
+		seekBar.setOnSeekBarChangeListener(this);
 		Context context = getBaseContext();
-		vib = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
-		
-	}
-
-	@Override
-	public void onClick(View v) {
-		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.RadioGroup01);
-		int checkedButtonId = radioGroup.getCheckedRadioButtonId();
-		if (checkedButtonId == R.id.RadioButtonRandomRepeat) {
-			vibMode = RANDOM;
-		} else if (checkedButtonId == R.id.RadioButton01) {
-			vibMode = CONTINUOUS;
+		if (vib == null) {
+			vib = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
 		}
-		Log.d(TAG, "vibMode:" + vibMode);
+	}
+	
+	
+	@Override
+	public synchronized void onClick(View v) {
+		int viewId = v.getId();
+		Log.d(TAG, "viewId:" + viewId + "vibMode:" + vibMode);
 		
 		if (isVibrating) {
-			if (myVibrator != null) {
-				myVibrator.setToDie();
-			}
-			vib.cancel();
-			isVibrating = false;
-			Button button = (Button) findViewById(R.id.Massage);
-			button.setText(R.string.start);
-			setEnabledRadioButtons(true);
-			Log.d(TAG, "vibrate end.");
+			vibStop();
 			return;
 		}
 		if (myVibrator != null) {
 			myVibrator.setToDie();
 		}
-		myVibrator = new MyVibrator();
-		myVibrator.setToAlive();
-		Thread myVibratorThread = new Thread(myVibrator);
-		myVibratorThread.start();
-		isVibrating = true;
-		setEnabledRadioButtons(false);
-
-		Log.d(TAG, "vibrate start.");
-		Button button = (Button) findViewById(R.id.Massage);
-		button.setText(R.string.stop);
-	}
-
-	private void setEnabledRadioButtons(boolean isEnabled) {
-		findViewById(R.id.RadioButton01).setEnabled(isEnabled);
-		findViewById(R.id.RadioButtonRandomRepeat).setEnabled(isEnabled);
+		vibStart();
 	}
 
 	@Override
@@ -130,7 +106,7 @@ public class Massage extends Activity implements OnClickListener {
 				if (vibMode == RANDOM) {
 					sleepBonus = (long) (Math.random() * 200L);
 				} else {
-					sleepBonus = (long) -10L;
+					sleepBonus = 1000L - vibratingTime;
 				}
 				long sleepTime = vibratingTime + sleepBonus;
 				Log.d(TAG, "sleep start " + sleepTime + "msec.");
@@ -145,8 +121,57 @@ public class Massage extends Activity implements OnClickListener {
 				double rand = Math.random();
 				return (long) (rand * 700);
 			}
-			return 1000L;
+			return vibratingTime;
 		}
 		
+	}
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser) {
+		Log.d(TAG, "onProgressChanged called.");
+		if (progress == 0) {
+			vibStop();
+			return;
+		}
+		vibStart();
+		if (progress == seekBar.getMax()) {
+			vibMode = RANDOM;
+			return;
+		}
+		vibMode = CONTINUOUS;
+		vibratingTime  = progress * 10;
+	}
+
+	private synchronized void vibStart() {
+		if (myVibrator != null) {
+			myVibrator.setToDie();
+		}
+		myVibrator = new MyVibrator();
+		myVibrator.setToAlive();
+		Thread myVibratorThread = new Thread(myVibrator);
+		myVibratorThread.start();
+
+		isVibrating = true;
+
+		Log.d(TAG, "vibrate start.");
+	}
+
+	private synchronized void vibStop() {
+		if (myVibrator != null) {
+			myVibrator.setToDie();
+		}
+		vib.cancel();
+		isVibrating = false;
+
+		Log.d(TAG, "vibrate end.");
+	}
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		Log.d(TAG, "onStartTrackingTouch called.");
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		Log.d(TAG, "onStopTrackingTouch called.");
 	}
 }
