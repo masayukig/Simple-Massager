@@ -9,10 +9,10 @@
 		android:gravity="center_vertical|center_horizontal">
 		<LinearLayout android:id="@+id/LinearLayout02"
 			android:orientation="horizontal" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:gravity="center_vertical|center_horizontal">
+			android:gravity="center_vertical|center_horizontal" android:layout_height="wrap_content">
 			<SeekBar android:id="@+id/SeekBar01" android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:layout_marginLeft="40px"
-				android:gravity="center_vertical|center" android:layout_marginRight="40px"></SeekBar>
+				android:layout_marginLeft="40px"
+				android:gravity="center_vertical|center" android:layout_marginRight="40px" android:layout_height="fill_parent"></SeekBar>
 	
 </LinearLayout>
 		<LinearLayout android:id="@+id/LinearLayout01"
@@ -21,12 +21,11 @@
 
 			<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
 				android:layout_weight="0" android:layout_height="wrap_content"
-				android:text="STOP" android:layout_gravity="center_vertical|left"></TextView>
+				android:layout_gravity="center_vertical|left" android:text="OFF"></TextView>
 			<TextView android:id="@+id/TextView02"
 				android:layout_weight="1" android:gravity="center"
 				android:layout_gravity="center|center_vertical"
-				android:layout_width="wrap_content" android:layout_height="wrap_content"
-				android:text="Short &lt;- CONTINUOUS -&gt; Long"></TextView>
+				android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="|     |    |   |  | | | ||||||||"></TextView>
 			<TextView android:id="@+id/TextView03"
 				android:layout_weight="0" android:layout_gravity="center_vertical|right"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"

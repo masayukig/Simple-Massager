@@ -99,7 +99,7 @@ public class Massage extends Activity
 		void setToDie() {
 			isAlive = false;
 		}
-		private void sleep(long vibratingTime) {
+		private void sleep(long mVibratingTime) {
 			try {
 				long sleepBonus = 0;
 				
@@ -108,7 +108,7 @@ public class Massage extends Activity
 				} else {
 					sleepBonus = 1000L - vibratingTime;
 				}
-				long sleepTime = vibratingTime + sleepBonus;
+				long sleepTime = mVibratingTime + sleepBonus;
 				Log.d(TAG, "sleep start " + sleepTime + "msec.");
 				Thread.sleep(sleepTime);
 				Log.d(TAG, "sleep end " + sleepTime + "msec.");
@@ -121,7 +121,7 @@ public class Massage extends Activity
 				double rand = Math.random();
 				return (long) (rand * 700);
 			}
-			return vibratingTime;
+			return 400L;
 		}
 		
 	}
@@ -139,7 +139,7 @@ public class Massage extends Activity
 			return;
 		}
 		vibMode = CONTINUOUS;
-		vibratingTime  = progress * 10;
+		vibratingTime  = progress * 10 + 15;
 	}
 
 	private synchronized void vibStart() {
