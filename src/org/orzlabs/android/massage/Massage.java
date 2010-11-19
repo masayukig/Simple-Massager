@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,7 @@ public class Massage extends Activity
 	private Vibrator vib;
 	private static MyVibrator myVibrator;
 
-	private long vibratingTime = 1000L;
+	private static long vibratingTime = 1000L;
 
 	
 	/** Called when the activity is first created. */
@@ -44,8 +45,28 @@ public class Massage extends Activity
 			vib = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
 		}
 	}
-	
-	
+
+	@Override  
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Log.d(TAG, "onKeyDown called:keyCode:" + keyCode + ", event:" + event);
+
+		boolean ret = true;
+		SeekBar seekBar = (SeekBar) findViewById(R.id.SeekBar01);
+		if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+			seekBar.setProgress(seekBar.getProgress() + 10);
+			onProgressChanged(seekBar, seekBar.getProgress(), true);
+		} else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+			seekBar.setProgress(seekBar.getProgress() - 10);
+			onProgressChanged(seekBar, seekBar.getProgress(), true);
+		} else {
+			ret = super.onKeyDown(keyCode, event);
+		}
+
+		Log.d(TAG, "onKeyDown vibratingTime:" + vibratingTime);
+
+		return ret;
+	}
+
 	@Override
 	public synchronized void onClick(View v) {
 		int viewId = v.getId();
