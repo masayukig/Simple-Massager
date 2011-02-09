@@ -67,7 +67,6 @@ public class Massage extends Activity
 		return ret;
 	}
 
-	@Override
 	public synchronized void onClick(View v) {
 		int viewId = v.getId();
 		Log.d(TAG, "viewId:" + viewId + "vibMode:" + vibMode);
@@ -101,7 +100,6 @@ public class Massage extends Activity
 	}
 	private class MyVibrator implements Runnable {
 		private boolean isAlive;
-		@Override
 		public void run() {
 			while (isAlive) {
 				long vibratingTime = getVibratingTime();
@@ -146,7 +144,6 @@ public class Massage extends Activity
 		}
 		
 	}
-	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
 		Log.d(TAG, "onProgressChanged called.");
@@ -186,12 +183,10 @@ public class Massage extends Activity
 
 		Log.d(TAG, "vibrate end.");
 	}
-	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
 		Log.d(TAG, "onStartTrackingTouch called.");
 	}
 
-	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
 		Log.d(TAG, "onStopTrackingTouch called.");
 	}
