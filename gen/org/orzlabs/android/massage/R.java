@@ -27,6 +27,8 @@ public final class R {
     }
     public static final class string {
         public static final int Continuous=0x7f040005;
+        public static final int InfoMessage=0x7f040008;
+        public static final int InfoTitle=0x7f040007;
         public static final int NotificationMsg=0x7f040006;
         public static final int RandomRepeat=0x7f040004;
         public static final int app_name=0x7f040001;

@@ -2,11 +2,16 @@ package org.orzlabs.android.massage;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -23,6 +28,7 @@ OnSeekBarChangeListener {
 	private static final String TAG = Massage.class.getSimpleName();
 
 	private static final int QUIT_ITEM = 0;
+	private static final int INFO_ITEM = 1;
 
 	private static final int MASSAGE_NOTIFICATION = 0;
 	
@@ -69,16 +75,45 @@ OnSeekBarChangeListener {
 		super.onCreateOptionsMenu(menu);
 		MenuItem itemQuit = menu.add(0, QUIT_ITEM, 0, "Quit");
 		itemQuit.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
+		MenuItem itemInfo = menu.add(0, INFO_ITEM, 1, "Info");
+		itemInfo.setIcon(android.R.drawable.ic_menu_info_details);
 		return true;
+	}
+	public String getVersionNumber(){
+		String versionName = "";
+		PackageManager pm = this.getPackageManager();
+		try {
+			PackageInfo info =
+				pm.getPackageInfo(this.getPackageName(),
+						PackageManager.GET_META_DATA);
+			versionName += info.versionName;
+		} catch (NameNotFoundException e) {
+			versionName +="0";
+		}
+		return versionName;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		super.onOptionsItemSelected(item);
-		vibStop();
-		progress = 0;
+		if (item.getItemId() == QUIT_ITEM) {
+			vibStop();
+			progress = 0;
 
-		finish();
+			finish();
+			return true;
+		}
+		AlertDialog.Builder ad = new AlertDialog.Builder(this);
+		ad.setTitle(R.string.InfoTitle);
+		ad.setMessage("SimpleMassager\n\n" + getText(R.string.InfoMessage) + getVersionNumber());
+		ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		});
+		ad.create();
+		ad.show();
 		return true;
 	}
 

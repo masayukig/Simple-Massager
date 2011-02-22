@@ -7,4 +7,6 @@
     <string name="RandomRepeat">Random Repeat</string>
     <string name="Continuous">Continuous</string>
     <string name="NotificationMsg">Vibrating...</string>
+    <string name="InfoTitle">Information</string>
+    <string name="InfoMessage">Version:</string>
 </resources>
