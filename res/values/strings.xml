@@ -6,4 +6,5 @@
     <string name="start">start</string>
     <string name="RandomRepeat">Random Repeat</string>
     <string name="Continuous">Continuous</string>
+    <string name="NotificationMsg">Vibrating...</string>
 </resources>

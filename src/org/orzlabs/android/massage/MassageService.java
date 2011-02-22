@@ -14,6 +14,7 @@ public class MassageService extends Service {
 	// TODO to Enum
 	public static final int RANDOM = 0;
 	public static final int CONTINUOUS = 1;
+
 	public static long vibratingTime = 1000L;
 
 	private static final String TAG = "MassageService";
@@ -40,6 +41,7 @@ public class MassageService extends Service {
 					Log.d(TAG, "vibrate end " + vibratingTime + "msec.");
 					customSleep(vibratingTime);
 					Log.d(TAG, "vibrating " + vibratingTime + "msec.");
+					vib.cancel();
 				}
 			}
 			private void customSleep(long mVibratingTime) {
