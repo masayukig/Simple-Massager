@@ -13,6 +13,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class Massage extends Activity
@@ -103,15 +105,20 @@ OnSeekBarChangeListener {
 			finish();
 			return true;
 		}
+		TextView tv = new TextView(this);
+		tv.setAutoLinkMask(Linkify.WEB_URLS);
+		tv.setText("SimpleMassager\n\n" + getText(R.string.InfoMessage)
+				+ getVersionNumber() + "\n"
+				+ "http://blog.orzlabs.org/search/label/Simple%20Massager");
 		AlertDialog.Builder ad = new AlertDialog.Builder(this);
 		ad.setTitle(R.string.InfoTitle);
-		ad.setMessage("SimpleMassager\n\n" + getText(R.string.InfoMessage) + getVersionNumber());
-		ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			
+		ad.setIcon(android.R.drawable.ic_menu_info_details);
+		ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {			
 			public void onClick(DialogInterface dialog, int which) {
 				
 			}
 		});
+		ad.setView(tv);
 		ad.create();
 		ad.show();
 		return true;
