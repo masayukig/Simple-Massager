@@ -36,11 +36,11 @@ public class MassageService extends Service {
 			public void run() {
 				while (isAlive) {
 					long vibratingTime = getVibratingTime();
-					Log.d(TAG, "vibrate start " + vibratingTime + "msec.");
+					Log.v(TAG, "vibrate start " + vibratingTime + "msec.");
 					vib.vibrate(vibratingTime);
-					Log.d(TAG, "vibrate end " + vibratingTime + "msec.");
+					Log.v(TAG, "vibrate end " + vibratingTime + "msec.");
 					customSleep(vibratingTime);
-					Log.d(TAG, "vibrating " + vibratingTime + "msec.");
+					Log.v(TAG, "vibrating " + vibratingTime + "msec.");
 					vib.cancel();
 				}
 			}
@@ -54,9 +54,9 @@ public class MassageService extends Service {
 						sleepBonus = 1000L - vibratingTime;
 					}
 					long sleepTime = mVibratingTime + sleepBonus;
-					Log.d(TAG, "sleep start " + sleepTime + "msec.");
+					Log.v(TAG, "sleep start " + sleepTime + "msec.");
 					Thread.sleep(sleepTime);
-					Log.d(TAG, "sleep end " + sleepTime + "msec.");
+					Log.v(TAG, "sleep end " + sleepTime + "msec.");
 				} catch (InterruptedException e) {
 					Log.e(TAG, e.getMessage(),e);
 				}

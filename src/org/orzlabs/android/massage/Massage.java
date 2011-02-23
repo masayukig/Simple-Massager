@@ -154,6 +154,7 @@ OnSeekBarChangeListener {
 		super.onPause();
 		if (progress != 0) {
 			notification();
+			finish();
 		}
 	}
 	private void notification() {
@@ -163,15 +164,15 @@ OnSeekBarChangeListener {
 			new Notification(R.drawable.icon,
 					getText(R.string.NotificationMsg),
 					System.currentTimeMillis());
+		Intent intent = new Intent(this, Massage.class);
 		PendingIntent pi =
-			PendingIntent.getActivity(this,
-					0,
-					new Intent(this, Massage.class),
-					0);
+			PendingIntent.getActivity(this, 0,
+					intent, 0);
 		notification.setLatestEventInfo(this,
 				"Simple Massager",
 				getText(R.string.NotificationMsg),
 				pi);
+		notification.flags = Notification.FLAG_ONGOING_EVENT;
 		nm.notify(MASSAGE_NOTIFICATION, notification);
 	}
 
